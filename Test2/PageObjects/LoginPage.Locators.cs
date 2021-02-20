@@ -13,16 +13,14 @@ namespace Test2.PageObjects
         private IWebDriver _driver;
         private WebDriverWait _driverWait;
 
-        //public LoginPage(IWebDriver driver)
-        //{
-        //    _driver = driver;
-        //    _driverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-        //    _driverWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
-        //}
-        public LoginPage(IWebDriver driver) => _driver = driver;
+        public LoginPage(IWebDriver driver)
+        {
+            _driver = driver;
+            _driverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            _driverWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
+        }
 
-
-
+       
         public IWebElement EmailFieldText => _driver.FindElement(By.XPath("//input[@class='input-text required-entry validate-email']"));
         public IWebElement PasswordFieldtext => _driver.FindElement(By.XPath("//input[@class='input-text required-entry validate-password']"));
         // public IWebElement AutentificareButton => _driver.FindElement(By.XPath("//button[@name='send' ]"));

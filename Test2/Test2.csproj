@@ -94,7 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Hooks.cs" />
-    <Compile Include="PageObjects\BasePage.cs" />
     <Compile Include="PageObjects\BlogPage.Actions.cs" />
     <Compile Include="PageObjects\BlogPage.Locators.cs" />
     <Compile Include="PageObjects\Helper.cs" />

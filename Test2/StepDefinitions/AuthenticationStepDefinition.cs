@@ -10,20 +10,18 @@ using Test2.PageObjects;
 
 namespace Test2.StepDefinitions
 {
-    [Binding]
+   [Binding]
     public sealed class AuthenticationStepDefinition
     {
         // For additional details on SpecFlow step definitions see https://go.specflow.org/doc-stepdef
 
-        //   private readonly ScenarioContext _scenarioContext;
-        //public IWebDriver Driver { get; private set; }
-        public IWebDriver _driver;
-        public AuthenticationStepDefinition(IWebDriver driver) => _driver = driver;
-       
-        //public AuthenticationStepDefinition(ScenarioContext scenarioContext)
-        //{
-        //    _scenarioContext = scenarioContext;
-        //}
+        private readonly ScenarioContext _scenarioContext;
+       public IWebDriver Driver { get; private set; }
+
+        public AuthenticationStepDefinition(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
 
         //[Given(@"I navigate to authentication page")]
         //public void GivenINavigateToAuthenticationPage()
@@ -59,10 +57,8 @@ namespace Test2.StepDefinitions
         [Given(@"I navigate to my authentication page")]
         public void GivenINavigateToMyAuthenticationPage()
         {
-        BasePage basePage = new BasePage(_driver);
-        basePage.NavigateToUrl(basePage.NobilaUrl);
-         HomePage homePage = new HomePage(_driver);
-        homePage.GoToAuthentication();
+            HomePage homePage = new HomePage(Driver);
+            homePage.GoToAuthentication();
 
         }
 
@@ -70,14 +66,14 @@ namespace Test2.StepDefinitions
         public void WhenILoginWithFollowingCredentials(Table table)
         {
             var user = table.CreateInstance<UserDto>();
-            LoginPage loginPage = new LoginPage(_driver);
+            LoginPage loginPage = new LoginPage(Driver);
             loginPage.AuthenticateUser(user);
         }
 
         [Then(@"I am successfully logged in")]
         public void ThenIAmSuccessfullyLoggedIn()
         {
-            LoginPage loginPage = new LoginPage(_driver);
+            LoginPage loginPage = new LoginPage(Driver);
             Assert.IsTrue(loginPage.Deconectare.Displayed);
         }
 

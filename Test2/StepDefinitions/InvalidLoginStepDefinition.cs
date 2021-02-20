@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +10,20 @@ using Test2.PageObjects;
 namespace Test2.StepDefinitions
 {
     [Binding]
-    public sealed class InvalidLoginStepDefinition
+    public sealed class InvalidLoginStepDefinition : Hooks
     {
         // For additional details on SpecFlow step definitions see https://go.specflow.org/doc-stepdef
 
-        //private readonly ScenarioContext _scenarioContext;
+        private readonly ScenarioContext _scenarioContext;
 
-        //public InvalidLoginStepDefinition(ScenarioContext scenarioContext)
-        //{
-        //    _scenarioContext = scenarioContext;
-        //}
-        public IWebDriver _driver;
-        public InvalidLoginStepDefinition(IWebDriver driver) => _driver = driver;
-
+        public InvalidLoginStepDefinition(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
         [Given(@"I navigate to my authentication page")]
         public void GivenINavigateToMyAuthenticationPage()
         {
-            BasePage basePage = new BasePage(_driver);
-            basePage.NavigateToUrl(basePage.NobilaUrl);
-            HomePage homePage = new HomePage(_driver);
+            HomePage homePage = new HomePage(Driver);
             homePage.GoToAuthentication();
         }
 
@@ -37,13 +31,13 @@ namespace Test2.StepDefinitions
         public void WhenILoginWithFollowingCredentials(Table table)
         {
             var user = table.CreateInstance<UserDto>();
-            LoginPage loginPage = new LoginPage(_driver);
+            LoginPage loginPage = new LoginPage(Driver);
             loginPage.AuthenticateUser(user);
         }
         [Then(@"error message appear")]
         public void ThenErrorMessageAppear()
         {
-            LoginPage loginPage = new LoginPage(_driver);
+            LoginPage loginPage = new LoginPage(Driver);
             Assert.IsTrue(loginPage.ErrorMessageAuthentification.Displayed);
         }
 

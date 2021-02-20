@@ -13,14 +13,12 @@ namespace Test2.PageObjects
     {
         private IWebDriver _driver;
         private WebDriverWait _driverWait;
-        //public ProductPage(IWebDriver driver)
-        //{
-        //    _driver = driver;
-        //    _driverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-        //    _driverWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
-        //}
-        public ProductPage(IWebDriver driver) => _driver = driver;
-
+        public ProductPage(IWebDriver driver)
+        {
+            _driver = driver;
+            _driverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            _driverWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
+        }
 
         private IWebElement AdaugaInCosButton => _driver.FindElement(By.XPath("//button[@id='product-addtocart-button']"));
         private IWebElement AdaugaLaFavorite=> _driver.FindElement(By.CssSelector("//a.wishlist-add.waves-effect.waves-light"));
