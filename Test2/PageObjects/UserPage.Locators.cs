@@ -12,13 +12,14 @@ namespace Test2.PageObjects
     {
         private IWebDriver _driver;
         private WebDriverWait _driverWait;
-        public UserPage(IWebDriver driver)
-        {
-            _driver = driver;
-            _driverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(3));
-            _driverWait.IgnoreExceptionTypes();
+        //public UserPage(IWebDriver driver)
+        //{
+        //    _driver = driver;
+        //    _driverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(3));
+        //    _driverWait.IgnoreExceptionTypes();
 
-        }
+        //}
+        public UserPage(IWebDriver driver) => _driver = driver;
 
         private IWebElement DateleMele => _driver.FindElement(By.XPath("/html/body/div[1]/div/div[1]/div/div[2]/div[1]/div/div/ul/li[1]"));
         private IWebElement Modifica => _driver.FindElement(By.CssSelector("body > div.wrapper > div > div.main-container.col2-left-layout > div > div.row > div.col-main.col-xs-12.col-md-9 > div > div > div:nth-child(3) > div.section-content > ul > li > button.button.button-modify.f-right.waves-effect.waves-light"));

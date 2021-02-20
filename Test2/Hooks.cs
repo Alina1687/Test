@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using BoDi;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
@@ -17,46 +18,66 @@ namespace Test2
         Firefox
     }
 
-    //[Binding]  
-    public class Hooks
+    [Binding]  //daca nu creeaza 2 instante de browsere
+    public sealed class Hooks
     {
         private BrowserType _browserType;
-        protected static IWebDriver Driver;
+        public static IWebDriver _driver;
+        private readonly IObjectContainer _objectContainer;
 
-
-        [BeforeScenario]
-        public void BeforeScenario()
+        public Hooks(IObjectContainer objectContainer)
         {
-            var browserType = TestContext.Parameters.Get("Browser", "Chrome");
-            _browserType = (BrowserType)Enum.Parse(typeof(BrowserType), browserType);
-            if (Driver is null)
-            {
-                ChooseDriverInstance(_browserType);
-                Driver.Manage().Window.Maximize();
-            }
-            Driver.Navigate().GoToUrl("https://www.nobilacasa.ro");
+            _objectContainer = objectContainer;
         }
+        public void CreateDriver()
+        {
+             var browserType = TestContext.Parameters.Get("Browser", "Chrome");
+            _browserType = (BrowserType)Enum.Parse(typeof(BrowserType), browserType);
+           
+             ChooseDriverInstance(_browserType);
+              _driver.Manage().Window.Maximize();
+        }
+        //[BeforeScenario]
+        //public void BeforeScenario()
+        //{
+        //    CreateDriver();
+        //    //var browserType = TestContext.Parameters.Get("Browser", "Chrome");
+        //    //_browserType = (BrowserType)Enum.Parse(typeof(BrowserType), browserType);
+        //    //if (Driver is null)
+        //    //{
+        //    //    ChooseDriverInstance(_browserType);
+        //    //    Driver.Manage().Window.Maximize();
+        //    //}
+        //    //Driver.Navigate().GoToUrl("https://www.nobilacasa.ro");
+        //}
 
         public void ChooseDriverInstance(BrowserType browserType)
         {
             switch (browserType)
             {
                 case BrowserType.Chrome:
-                    Driver = new ChromeDriver();
+                    _driver = new ChromeDriver();
+                    _objectContainer.RegisterInstanceAs<IWebDriver>(_driver);
                     break;
                 case BrowserType.Firefox:
-                    Driver = new FirefoxDriver();
+                    _driver = new FirefoxDriver();
+                    _objectContainer.RegisterInstanceAs<IWebDriver>(_driver);
                     break;
             }
+        }
+        [BeforeScenario]
+        public void BeforeScenario()
+        {
+            CreateDriver();
         }
 
         [AfterScenario]
         public void AfterScenario()
         {
-            if (!(Driver is null))
+          //  if (!(Driver is null))
             {
-                Driver.Quit();
-                Driver = null;
+                _driver.Quit();
+                _driver = null;
             }
         }
     }

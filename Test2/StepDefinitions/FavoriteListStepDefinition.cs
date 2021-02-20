@@ -12,23 +12,27 @@ namespace Test2.StepDefinitions
 {
     
      [Binding]
-    public sealed class FavoritesListStep :Hooks
+    public sealed class FavoritesListStep
     {
         // For additional details on SpecFlow step definitions see https://go.specflow.org/doc-stepdef
 
-        private readonly ScenarioContext _scenarioContext;
+        //private readonly ScenarioContext _scenarioContext;
 
-        public FavoritesListStep(ScenarioContext scenarioContext)
-        {
-            _scenarioContext = scenarioContext;
-        }
+        //public FavoritesListStep(ScenarioContext scenarioContext)
+        //{
+        //    _scenarioContext = scenarioContext;
+        //}
+        public IWebDriver _driver;
+        public FavoritesListStep(IWebDriver driver) => _driver = driver;
 
-      //  public IWebDriver Driver { get; private set; }
+        //  public IWebDriver Driver { get; private set; }
 
         [Given(@"I navigate to my authentication page")]
         public void GivenINavigateToMyAuthenticationPage()
         {
-            HomePage homePage = new HomePage(Driver);
+            BasePage basePage = new BasePage(_driver);
+            basePage.NavigateToUrl(basePage.NobilaUrl);
+            HomePage homePage = new HomePage(_driver);
             homePage.GoToAuthentication();
         }
 
@@ -36,7 +40,7 @@ namespace Test2.StepDefinitions
         public void WhenILoginWithFollowingCredentials(Table table)
         {
             var user = table.CreateInstance<UserDto>();
-            LoginPage loginPage = new LoginPage(Driver);
+            LoginPage loginPage = new LoginPage(_driver);
             loginPage.AuthenticateUser(user);
             Assert.IsTrue(loginPage.Deconectare.Displayed);
         }
@@ -44,7 +48,7 @@ namespace Test2.StepDefinitions
         [Then(@"I can go to FavoriteList")]
         public void ThenICanGoToFavoriteList()
         {
-            LoginPage loginPage = new LoginPage(Driver);
+            LoginPage loginPage = new LoginPage(_driver);
             loginPage.GoToFavoriteList();
             Assert.IsTrue(loginPage.FavoriteView.Displayed);
         }

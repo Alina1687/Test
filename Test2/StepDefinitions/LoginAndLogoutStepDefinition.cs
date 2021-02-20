@@ -11,22 +11,26 @@ using Test2.PageObjects;
 namespace Test2.StepDefinitions
 {
     [Binding]
-    public sealed class LoginAndLogoutStepDefinition:Hooks
+    public sealed class LoginAndLogoutStepDefinition
     {
         // For additional details on SpecFlow step definitions see https://go.specflow.org/doc-stepdef
 
-        private readonly ScenarioContext _scenarioContext;
+        //  private readonly ScenarioContext _scenarioContext;
 
-        public LoginAndLogoutStepDefinition(ScenarioContext scenarioContext)
-        {
-            _scenarioContext = scenarioContext;
-        }
+        //public LoginAndLogoutStepDefinition(ScenarioContext scenarioContext)
+        //{
+        //    _scenarioContext = scenarioContext;
+        //}
+        public IWebDriver _driver;
+        public LoginAndLogoutStepDefinition(IWebDriver driver) => _driver = driver;
 
 
         [Given(@"I navigate to my authentication page")]
         public void GivenINavigateToMyAuthenticationPage()
         {
-            HomePage homePage = new HomePage(Driver);
+            BasePage basePage = new BasePage(_driver);
+            basePage.NavigateToUrl(basePage.NobilaUrl);
+            HomePage homePage = new HomePage(_driver);
             homePage.GoToAuthentication();
         }
 
@@ -34,14 +38,14 @@ namespace Test2.StepDefinitions
         public void WhenILoginWithFollowingCredentials(Table table)
         {
             var user = table.CreateInstance<UserDto>();
-            LoginPage loginPage = new LoginPage(Driver);
+            LoginPage loginPage = new LoginPage(_driver);
             loginPage.AuthenticateUser(user);
         }
 
         [When(@"I click disconnect button")]
         public void WhenIClickDisconnectButton()
         {
-            LoginPage loginPage = new LoginPage(Driver);
+            LoginPage loginPage = new LoginPage(_driver);
             loginPage.DisconectUser();
         }
        
@@ -49,7 +53,7 @@ namespace Test2.StepDefinitions
         [Then(@"I am successfully logged out")]
         public void ThenIAmSuccessfullyLoggedOut()
         {
-            HomePage homePage = new HomePage(Driver);
+            HomePage homePage = new HomePage(_driver);
             Assert.IsTrue(homePage.AutentificareInregistrare.Displayed);
 
         }

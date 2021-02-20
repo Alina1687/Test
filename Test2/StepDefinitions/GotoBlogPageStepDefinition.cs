@@ -10,7 +10,7 @@ using Test2.PageObjects;
 namespace Test2.StepDefinitions
 {
     [Binding]
-    public sealed class GotoBlogPageStepDefinition:Hooks
+    public sealed class GotoBlogPageStepDefinition
     {
         // For additional details on SpecFlow step definitions see https://go.specflow.org/doc-stepdef
 
@@ -20,23 +20,23 @@ namespace Test2.StepDefinitions
         //{
         //    _scenarioContext = scenarioContext;
         //}
+        public IWebDriver _driver;
+        public GotoBlogPageStepDefinition(IWebDriver driver) => _driver = driver;
 
         [Given(@"I am on the site")]
         public void GivenIAmOnTheSite()
         {
-
-            HomePage homePage = new HomePage(Driver);
-            homePage.AutentificareInregistrare.Click();
-            LoginPage loginPage = new LoginPage(Driver);
-
-            
+            BasePage basePage = new BasePage(_driver);
+            basePage.NavigateToUrl(basePage.NobilaUrl);
+            HomePage homePage = new HomePage(_driver);
+           homePage.GoToAuthentication();
 
         }
 
         [When(@"I press the Blog button")]
         public void WhenIPressTheBlogButton()
         {
-            HomePage homePage = new HomePage(Driver);
+            HomePage homePage = new HomePage(_driver);
             homePage.GoToBlogPage();
 
         }
@@ -44,7 +44,7 @@ namespace Test2.StepDefinitions
         [Then(@"I am sent to Blog page")]
         public void ThenIAmSentToBlogPage()
         {
-            BlogPage blogPage = new BlogPage(Driver);
+            BlogPage blogPage = new BlogPage(_driver);
             Assert.IsTrue(blogPage.AboutUS.Displayed);
         }
     }

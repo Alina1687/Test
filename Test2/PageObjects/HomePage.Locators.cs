@@ -12,13 +12,15 @@ namespace Test2.PageObjects
     {
         private IWebDriver _driver;
         private WebDriverWait _driverWait;
-        public HomePage(IWebDriver driver)
-        {
-            _driver = driver;
-            _driverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(3));
-            _driverWait.IgnoreExceptionTypes();
+        //public HomePage(IWebDriver driver)
+        //{
+        //    _driver = driver;
+        //    _driverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(3));
+        //    _driverWait.IgnoreExceptionTypes();
 
-        }
+        //}
+        public HomePage(IWebDriver driver) => _driver = driver;
+
         public IWebElement AutentificareInregistrare => _driverWait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("body > div.wrapper > div > header > div > div.row > div.section-left.col-xs-12.col-md-4.mobile-search-wrap > ul > li:nth-child(3) > a")));
         //public IWebElement AutentificareInregistrare => _driver.FindElement(By.CssSelector("body > div.wrapper > div > header > div > div.row > div.section-left.col-xs-12.col-md-4.mobile-search-wrap > ul > li:nth-child(3) > a"));
 
